@@ -99,11 +99,80 @@ Springboot+shiro+vue+MySQL
 登陆表login，收藏表collect，评论表comment，回应表reply，商品图片信息表commimages，商品信息表commdity，好友表friends，公告表news，商品购买通知表notice，售卖记录表soldrecord，用户信息，用户角色。
 ![](https://sign-1259371307.cos.ap-chongqing.myqcloud.com/1615550791054.png)
 
-### 三、后台架构图
+### 三、后台架构
 
 采用MVC架构,在dao层使用了Mybatis框架，实现对数据库的curd，service层调用dao层数据接口，拿到数据库的数据，但没有做太多业务逻辑，主要业务逻辑都放在了controller层，控制视图跳转。
 
 ![](https://sign-1259371307.cos.ap-chongqing.myqcloud.com/1615551807984.png)
+
+#### 1.后台项目结构设计思路
+
+ 1).页面设计包括：index.html,comment.html,list.html,tags.html,replys.html,category.html,specs.html,detail.html,console.html,login.html,newslist.html,relnews.html,updatenews.html,soldrecord.html,about.html,get.html,more.html,theme.html.
+    
+ 2.控制类设计分类：
+
+controller控制器文件分adminController、UserController、聊天控制器ChatController、商品收藏CollectController、商品控制类CommodityController、评论CommentController、公告通知Noticesontroller,卖货记录SoldController
+ 以及IndexConroller(放所有的页面跳转)。
+    
+ 3.统一返回的json格式
+
+将返回json的数据分为四大类，LayuiPageVo(需要分页的数据)，PageVo（返回给首页的json数据），ResultVo(操作状态返回类json数据)，还有一类是普通自定义JsonObject类json数据。这样返回的数据格式做了有效统一。
+   **LayuiPage**类型json数据格式： 
+
+```java
+ @ApiModelProperty(value = "",name = "msg",notes ="描述返回状态" )
+ private String msg;
+ @ApiModelProperty(value = "",name = "code",notes ="状态码" )
+ private Integer code;	                    
+ @ApiModelProperty(value = "",name = "count",notes ="数量" )                          
+ private Integer count;                       
+ @ApiModelProperty(value = "",name = "data",notes ="返回数据" )                        
+ private T data;                                                    
+```
+
+   **PageVo**类型的json数据格式：
+
+```java
+@ApiModelProperty(value = "",name = "status",notes ="返回状态码" )
+    private Integer status; //状态码
+    @ApiModelProperty(value = "",name = "message",notes ="返回信息" )
+    private String message; //返回信息
+    @ApiModelProperty(value = "",name = "pages",notes ="描述返回页数" )
+    private Integer pages;  //返回页数
+    @ApiModelProperty(value = "",name = "dataNumber",notes ="描述总记录数" )
+    private Integer dataNumber;//总记录数
+    @ApiModelProperty(value = "",name = "data",notes ="返回数据" )
+    private T data;    //返回数据
+```
+
+**ResultVo**类型json数据格式：
+
+```java
+@ApiModelProperty(value = "",name = "flag",notes ="描述是否成功" )
+    private boolean flag;   //是否成功
+    @ApiModelProperty(value = "",name = "status",notes ="描述返回状态码" )
+    private Integer status; //状态码
+    @ApiModelProperty(value = "",name = "message",notes ="描述返回信息" )
+    private String message; //返回信息
+    @ApiModelProperty(value = "",name = "data",notes ="返回数据" )
+    private Object data;    //返回数据
+```
+
+4.命名规范
+
+类名各单词首字母大写。
+
+方法名 英文都小写。
+
+
+
+
+
+
+
+
+
+
 
 
 
