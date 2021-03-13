@@ -14,7 +14,7 @@ public class MyConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**").addResourceLocations("file:D://campus_shop/pic/");
+        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
     }
     @Bean
     public WebMvcConfigurerAdapter WebMvcConfigurerAdapter() {
@@ -31,7 +31,7 @@ public class MyConfig extends WebMvcConfigurerAdapter {
             /**静态资源处理*/
             @Override
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
-                registry.addResourceHandler("/static/pic/**").addResourceLocations("classpath:/static/pic/");
+                registry.addResourceHandler("/pic/**").addResourceLocations("file:D://campus_shop/pic/");
                 super.addResourceHandlers(registry);
             }
         };

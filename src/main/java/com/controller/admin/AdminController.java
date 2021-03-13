@@ -8,6 +8,8 @@ import com.util.StatusCode;
 import com.util.ValidateCode;
 import com.vo.LayuiPageVo;
 import com.vo.ResultVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -23,11 +25,12 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
- * @Author: hlt
- * @Description: 管理员控制器
+ * @Author: chuan
  * @Date: 2020/3/10 16:54
  */
+
 @Controller
+@Api(value = "AdminController",tags = "管理员相关接口")
 public class AdminController {
     @Autowired
     private UserRoleService userRoleService;
@@ -56,6 +59,7 @@ public class AdminController {
      * */
     @ResponseBody
     @PostMapping("/admin/login")
+    @ApiOperation(value = "登录提示", httpMethod = "POST",response = ResultVo.class)
     public ResultVo adminlogin(@RequestBody Login login, HttpSession session){
         System.out.println("测试是否进入！！！");
         String account=login.getUsername();
@@ -130,6 +134,7 @@ public class AdminController {
      */
     @GetMapping("/admin/userlist/{roleid}/{userstatus}")
     @ResponseBody
+    @ApiOperation(value = "分页查询不同角色用户信息", httpMethod = "GET",response = LayuiPageVo.class)
     public LayuiPageVo userlist(int limit, int page,@PathVariable("roleid") Integer roleid,@PathVariable("userstatus") Integer userstatus) {
         List<UserInfo> userInfoList = userInfoService.queryAllUserInfo((page - 1) * limit, limit,roleid,userstatus);
         Integer dataNumber = userInfoService.queryAllUserCount(roleid);
@@ -142,6 +147,7 @@ public class AdminController {
      */
     @PutMapping("/admin/set/administrator/{userid}/{roleid}")
     @ResponseBody
+    @ApiOperation(value = "设置为管理员或普通成员", httpMethod = "PUT",response = ResultVo.class)
     public ResultVo setadmin(@PathVariable("userid") String userid,@PathVariable("roleid") Integer roleid) {
         if (roleid == 2){
             Integer i = loginService.updateLogin(new Login().setUserid(userid).setRoleid(roleid));
@@ -175,6 +181,7 @@ public class AdminController {
      */
     @PutMapping("/admin/user/forbid/{userid}/{userstatus}")
     @ResponseBody
+    @ApiOperation(value = "用户封号解封", httpMethod = "PUT",response = ResultVo.class)
     public ResultVo adminuserlist(@PathVariable("userid") String userid,@PathVariable("userstatus") Integer userstatus) {
         if (userstatus == 0){
             Integer i = loginService.updateLogin(new Login().setUserid(userid).setUserstatus(userstatus));
@@ -218,6 +225,7 @@ public class AdminController {
      */
     @GetMapping("/admin/commodity/{commstatus}")
     @ResponseBody
+    @ApiOperation(value = "分页管理员擦好看各类商品信息", httpMethod = "GET",response = LayuiPageVo.class)
     public LayuiPageVo userCommodity(@PathVariable("commstatus") Integer commstatus, int limit, int page) {
         if(commstatus==100){
             List<Commodity> commodityList = commodityService.queryAllCommodity((page - 1) * limit, limit, null, null);
@@ -237,6 +245,7 @@ public class AdminController {
      * */
     @ResponseBody
     @PutMapping("/admin/changecommstatus/{commid}/{commstatus}")
+    @ApiOperation(value = "管理员对商品操作", httpMethod = "PUT",response = ResultVo.class)
     public ResultVo ChangeCommstatus(@PathVariable("commid") String commid, @PathVariable("commstatus") Integer commstatus) {
         Integer i = commodityService.ChangeCommstatus(commid, commstatus);
         if (i == 1){

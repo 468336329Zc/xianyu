@@ -6,6 +6,8 @@ import com.service.NoticesService;
 import com.util.StatusCode;
 import com.vo.LayuiPageVo;
 import com.vo.ResultVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,7 @@ import java.util.List;
  * @since 2019-12-25
  */
 @Controller
+@Api(value = "NoticesController",tags = "信息通知相关")
 public class NoticesController {
     @Autowired
     private NoticesService noticesService;
@@ -36,6 +39,7 @@ public class NoticesController {
      * */
     @ResponseBody
     @PutMapping("/notices/look/{id}")
+    @ApiOperation(value = "用户查看通知消息后设置已读",httpMethod = "PUT",response = ResultVo.class)
     public ResultVo LookNoticesById (@PathVariable("id") String id) {
         Integer i = noticesService.updateNoticesById(id);
         if (i == 1){
@@ -49,6 +53,7 @@ public class NoticesController {
      * **/
     @ResponseBody
     @GetMapping("/notices/queryNotices")
+    @ApiOperation(value = "返回前10条公告",httpMethod = "PUT",response = ResultVo.class)
     public ResultVo queryNotices (HttpSession session){
         String userid = (String) session.getAttribute("userid");
         List<Notices> noticesList = noticesService.queryNotices(userid);
@@ -61,6 +66,7 @@ public class NoticesController {
      * */
     @ResponseBody
     @GetMapping("/notices/cancelLatest")
+    @ApiOperation(value = "取消通知标志",httpMethod = "PUT",response = ResultVo.class)
     public ResultVo CancelLatest (HttpSession session){
         String userid = (String) session.getAttribute("userid");
         Integer i = noticesService.CancelLatest(userid);
@@ -78,6 +84,7 @@ public class NoticesController {
      * */
     @ResponseBody
     @GetMapping("/notices/queryall")
+    @ApiOperation(value = "返回用户所有通知消息",httpMethod = "GET",response = LayuiPageVo.class)
     public LayuiPageVo queryallSold(int limit, int page, HttpSession session) {
         String userid = (String) session.getAttribute("userid");
         List<Notices> noticesList = noticesService.queryAllNotices((page - 1) * limit, limit, userid);

@@ -6,6 +6,8 @@ import com.service.LoginService;
 import com.service.UserInfoService;
 import com.util.*;
 import com.vo.ResultVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import net.sf.json.JSONObject;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
@@ -38,6 +40,7 @@ import java.util.concurrent.TimeUnit;
  * @since 2019-12-21
  */
 @Controller
+@Api(value = "UserController",tags = "普通用户登录注册相关")
 public class UserController {
     @Autowired
     private LoginService loginService;
@@ -53,6 +56,7 @@ public class UserController {
      */
     @ResponseBody
     @PutMapping("/user/updatepwd")
+    @ApiOperation(value = "修改密码", httpMethod = "POST",response = ResultVo.class)
     public ResultVo updatepwd(HttpSession session, HttpServletRequest request) throws IOException {
         JSONObject json = JsonReader.receivePost(request);
         String oldpwd = json.getString("oldpwd");
@@ -84,6 +88,7 @@ public class UserController {
      */
     @ResponseBody
     @PostMapping("/user/avatar")
+    @ApiOperation(value = "展示用户头像昵称", httpMethod = "POST",response = ResultVo.class)
     public ResultVo userAvatar( HttpSession session) {
         String userid = (String) session.getAttribute("userid");
         UserInfo userInfo = userInfoService.queryPartInfo(userid);
@@ -95,6 +100,7 @@ public class UserController {
      * */
     @PostMapping(value = "/user/updateuimg")
     @ResponseBody
+    @ApiOperation(value = "修改头像", httpMethod = "POST",response = JSONObject.class)
     public JSONObject updateuimg(@RequestParam(value = "file", required = false) MultipartFile file, HttpSession session) throws IOException {
         JSONObject res = new JSONObject();
         JSONObject resUrl = new JSONObject();
@@ -120,6 +126,7 @@ public class UserController {
      */
     @RequiresPermissions("user:userinfo")
     @GetMapping("/user/lookinfo")
+    @ApiOperation(value = "跳转展示个人信息", httpMethod = "GET")
     public String lookinfo(HttpSession session, ModelMap modelMap) {
         String userid = (String) session.getAttribute("userid");
         UserInfo userInfo = userInfoService.LookUserinfo(userid);
@@ -131,6 +138,7 @@ public class UserController {
      * 跳转到完善个人信息
      */
     @GetMapping("/user/perfectinfo")
+    @ApiOperation(value = "跳转到完善个人信息", httpMethod = "POST")
     public String perfectInfo(HttpSession session, ModelMap modelMap) {
         String userid = (String) session.getAttribute("userid");
         UserInfo userInfo = userInfoService.LookUserinfo(userid);
@@ -147,6 +155,7 @@ public class UserController {
      */
     @ResponseBody
     @PostMapping("/user/updateinfo")
+    @ApiOperation(value = "修改个人信息", httpMethod = "POST",response = ResultVo.class)
     public ResultVo updateInfo(@RequestBody UserInfo userInfo, HttpSession session) {
         String username = userInfo.getUsername();
         String userid = (String) session.getAttribute("userid");
@@ -179,6 +188,7 @@ public class UserController {
      * */
     @ResponseBody
     @PostMapping("/user/sendupdatephone")
+    @ApiOperation(value = "更换手机号发送短信验证码", httpMethod = "POST",response = ResultVo.class)
     public ResultVo sendupdatephone(HttpServletRequest request) throws IOException {
         JSONObject json = JsonReader.receivePost(request);
         final String mobilephone = json.getString("mobilephone");
@@ -239,6 +249,7 @@ public class UserController {
      */
     @ResponseBody
     @PutMapping("/user/updatephone/{mobilephone}/{vercode}")
+    @ApiOperation(value = "修改绑定手机号", httpMethod = "PUT",response = ResultVo.class)
     public ResultVo updatephone(@PathVariable("mobilephone")String mobilephone,@PathVariable("vercode")String vercode,HttpSession session) {
         String userid = (String) session.getAttribute("userid");
         String rel = phonecodemap.get(mobilephone);

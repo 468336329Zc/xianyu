@@ -3,7 +3,7 @@
 
 
 #### 软件架构
-Springboot+vue+MySQL+shiro
+Springboot+shiro+vue+MySQL
 
 ### 一、功能：
   #### 登陆、注册、重置密码模块
@@ -47,6 +47,7 @@ Springboot+vue+MySQL+shiro
 
   #### 聊天模块
   1.可以进行在线聊天
+  采用的是websocket的方式，实现网络通信。
 
   #### 公告模块
   1. 发布公告
@@ -73,11 +74,60 @@ Springboot+vue+MySQL+shiro
   2. 设置为管理员或用户发送通知
 
   #### 支付模块
-  1. 提供支付宝沙箱支付，发货，确认收货等操作（此功能暂未开源，若需要请进群联系）
+  未实现。
 
-  #### 
+  #### 安全
+  1.使用shiro做数据加密验证。
 
-### 二、网站预览
+  #### 日志
+  1.使用了阿里巴巴的druid数据库连接池，对sql执行做了日志监控。
+
+  #### 错误页面
+  1.自定义页面处理错误。
+
+  ####异常处理
+   1.统一异常处理。
+
+  #### swagger api接口文档
+   使用swagger生成api接口文档。
+   启动项目，访问地址： 127.0.0.1/swagger-ui.html#
+
+   ![](https://sign-1259371307.cos.ap-chongqing.myqcloud.com/1615620190698.png)
+
+### 二、数据库设计
+
+登陆表login，收藏表collect，评论表comment，回应表reply，商品图片信息表commimages，商品信息表commdity，好友表friends，公告表news，商品购买通知表notice，售卖记录表soldrecord，用户信息，用户角色。
+![](https://sign-1259371307.cos.ap-chongqing.myqcloud.com/1615550791054.png)
+
+### 三、后台架构图
+
+采用MVC架构,在dao层使用了Mybatis框架，实现对数据库的curd，service层调用dao层数据接口，拿到数据库的数据，但没有做太多业务逻辑，主要业务逻辑都放在了controller层，控制视图跳转。
+
+![](https://sign-1259371307.cos.ap-chongqing.myqcloud.com/1615551807984.png)
+
+
+
+###   四、项目启动部署
+
+1.使用idea配置maven
+
+2.修改application-prod.yml配置文件数据库username 和password（阿里云短音验证配置按照自身情况确定是否修改）
+
+3.将项目中shop.sql文件导入数据库，数据库名为shop。（sql文件可能出现版本原因导入出错，建议MySQL5.7）
+
+4.启动运行
+
+5.所有项目登录账户密码都为123456
+
+6.管理员登陆地址 127.0.0.1/admin
+
+
+
+
+
+
+
+### 五、网站预览
 
 
 
@@ -99,11 +149,8 @@ Springboot+vue+MySQL+shiro
 
 ![](https://sign-1259371307.cos.ap-chongqing.myqcloud.com/1615547939625.png)
 
-三、数据库设计
 
-补充。。。
 
-四、后台架构图
 
-补充。。。
+
 

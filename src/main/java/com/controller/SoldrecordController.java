@@ -5,6 +5,8 @@ import com.service.SoldrecordService;
 import com.util.StatusCode;
 import com.vo.LayuiPageVo;
 import com.vo.ResultVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -21,10 +23,9 @@ import java.util.List;
  *  销售记录控制器
  * </p>
  *
- * @author hlt
- * @since 2019-12-21
  */
 @Controller
+@Api(value = "soldrecordController",tags = "售卖记录")
 public class SoldrecordController {
     @Autowired
     private SoldrecordService soldrecordService;
@@ -36,6 +37,7 @@ public class SoldrecordController {
      * */
     @ResponseBody
     @PutMapping("/soldrecord/delect/{id}")
+    @ApiOperation(value = "删除售出记录",httpMethod = "PUT",response = ResultVo.class)
     public ResultVo delectSold (@PathVariable("id") String id) {
         Integer i = soldrecordService.deleteSold(id);
         if (i == 1){
@@ -51,6 +53,7 @@ public class SoldrecordController {
      */
     @ResponseBody
     @GetMapping("/soldrecord/lookuser")
+    @ApiOperation(value = "返回用户所有售出记录",httpMethod = "GET",response = LayuiPageVo.class)
     public LayuiPageVo LookUserSold(int limit, int page, HttpSession session) {
         String userid = (String) session.getAttribute("userid");
         //如果未登录，给一个假id
@@ -69,6 +72,7 @@ public class SoldrecordController {
      */
     @ResponseBody
     @GetMapping("/soldrecord/queryall")
+    @ApiOperation(value = "返回全部的售出记录",httpMethod = "PUT",response = LayuiPageVo.class)
     public LayuiPageVo queryAllSold(int limit, int page) {
         List<Soldrecord> soldrecordList = soldrecordService.queryAllSoldrecord((page - 1) * limit, limit, null);
         Integer dataNumber = soldrecordService.querySoldCount(null);

@@ -6,6 +6,8 @@ import com.service.*;
 import com.util.KeyUtil;
 import com.util.StatusCode;
 import com.vo.ResultVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -23,6 +25,7 @@ import java.util.List;
  * @since 2019-12-21
  */
 @Controller
+@Api(value = "CommentReplyController",tags = "评论回复相关")
 public class CommentReplyController {
     @Autowired
     private CommodityService commodityService;
@@ -40,6 +43,7 @@ public class CommentReplyController {
      * */
     @ResponseBody
     @GetMapping("/comment/query/{commid}")
+    @ApiOperation(value = "返回商品评论以及回复",httpMethod = "GET",response = ResultVo.class)
     public ResultVo queryCommentReply(@PathVariable("commid") String commid){
         /**查询评论*/
         List<Comment> commentsList = commentService.queryComments(commid);
@@ -71,6 +75,7 @@ public class CommentReplyController {
      */
     @ResponseBody
     @PostMapping("/comment/insert")
+    @ApiOperation (value = "评论",httpMethod = "POST",response = ResultVo.class)
     public ResultVo insertcomment(@RequestBody Comment comment,HttpSession session) {
         String cuserid = (String) session.getAttribute("userid");
         String content = comment.getContent();
@@ -104,6 +109,7 @@ public class CommentReplyController {
      */
     @ResponseBody
     @PostMapping("/reply/insert")
+    @ApiOperation (value = "评论回复",httpMethod = "POST",response = ResultVo.class)
     public ResultVo insertreply(@RequestBody Reply reply,HttpSession session) {
         String ruserid = (String) session.getAttribute("userid");
         String recontent = reply.getRecontent();
@@ -138,6 +144,7 @@ public class CommentReplyController {
      */
     @ResponseBody
     @PutMapping("/comment/delete/{cid}")
+    @ApiOperation (value = "删除评论",httpMethod = "POST",response = ResultVo.class)
     public ResultVo deletecomment(@PathVariable("cid") String cid,HttpSession session){
         String cuserid = (String) session.getAttribute("userid");
         Comment comment = commentService.queryById(cid);
@@ -161,6 +168,7 @@ public class CommentReplyController {
      */
     @ResponseBody
     @PutMapping("/reply/delete/{rid}")
+    @ApiOperation (value = "删除评论回复",httpMethod = "POST",response = ResultVo.class)
     public ResultVo deletereply(@PathVariable("rid") String rid,HttpSession session){
         String ruserid = (String) session.getAttribute("userid");
         Reply reply = replyService.queryById(rid);

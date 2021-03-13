@@ -8,6 +8,8 @@ import com.util.KeyUtil;
 import com.util.StatusCode;
 import com.vo.LayuiPageVo;
 import com.vo.ResultVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -25,6 +27,7 @@ import java.util.List;
  * @since 2019-12-21
  */
 @Controller
+@Api(value = "CollectController",tags = "商品收藏")
 public class CollectController {
     @Autowired
     private CollectService collectService;
@@ -44,6 +47,7 @@ public class CollectController {
      */
     @ResponseBody
     @PostMapping("/collect/operate")
+    @ApiOperation(value = "收藏状态",httpMethod = "POST",response = ResultVo.class)
     public ResultVo insertcollect(@RequestBody Collect collect, HttpSession session){
         String couserid = (String) session.getAttribute("userid");
         Integer colloperate = collect.getColloperate();
@@ -95,6 +99,7 @@ public class CollectController {
      */
     @ResponseBody
     @PutMapping("/collect/delete/{id}")
+    @ApiOperation (value = "取消收藏状态返回",httpMethod = "PUT",response = ResultVo.class)
     public ResultVo deletecollect(@PathVariable("id") String id,HttpSession session){
         String couserid = (String) session.getAttribute("userid");
         Collect collect = new Collect().setId(id).setCouserid(couserid);
@@ -118,6 +123,7 @@ public class CollectController {
      */
     @ResponseBody
     @GetMapping("/user/collect/queryall")
+    @ApiOperation (value = "收藏内容",httpMethod = "POST",response = LayuiPageVo.class)
     public LayuiPageVo usercollect(int limit, int page, HttpSession session) {
         String couserid = (String) session.getAttribute("userid");
         List<Collect> collectList = collectService.queryAllCollect((page - 1) * limit, limit, couserid);

@@ -9,6 +9,9 @@ import com.service.UserInfoService;
 import com.service.UserRoleService;
 import com.util.*;
 import com.vo.ResultVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.shiro.SecurityUtils;
@@ -33,6 +36,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 @Controller
+@Api(value = "LoginController",tags = "登陆相关")
 public class LoginController {
     @Autowired
     private LoginService loginService;
@@ -48,6 +52,7 @@ public class LoginController {
      *图片验证码
      * */
     @RequestMapping(value = "/images", method = {RequestMethod.GET, RequestMethod.POST})
+    @ApiOperation(value = "图片验证码", httpMethod = "GET POST")
     public void images(HttpServletResponse response) throws IOException {
         response.setContentType("image/jpeg");
         //禁止图像缓存。
@@ -65,6 +70,7 @@ public class LoginController {
      * */
     @ResponseBody
     @PostMapping("/user/sendregcode")
+    @ApiOperation(value = "注册时发送短信验证码", httpMethod = "POST",response = ResultVo.class)
     public ResultVo sendregcode(HttpServletRequest request) throws IOException{
         JSONObject jsonObject = JsonReader.receivePost(request);
         final String mobilephone = jsonObject.getString("mobilephone");
@@ -123,6 +129,7 @@ public class LoginController {
      * */
     @ResponseBody
     @PostMapping("/user/register")
+    @ApiOperation(value = "注册", httpMethod = "POST",response = ResultVo.class)
     public  ResultVo userReg(@RequestBody UserInfo userInfo, HttpSession session) {
         String username = userInfo.getUsername();
         String password = userInfo.getPassword();
@@ -172,7 +179,8 @@ public class LoginController {
      * */
     @ResponseBody
     @PostMapping("/user/login")
-    public ResultVo userLogin(@RequestBody Login login, HttpSession session){
+    @ApiOperation(value = "登录", httpMethod = "POST",response = ResultVo.class)
+    public ResultVo userLogin(@RequestBody @ApiParam(name = "login",required = true) Login login , HttpSession session){
         String account=login.getUsername();
         String password=login.getPassword();
         String vercode=login.getVercode();
@@ -220,6 +228,7 @@ public class LoginController {
      * */
     @ResponseBody
     @PostMapping("/user/sendresetpwd")
+    @ApiOperation(value = "重置密码发送短信验证码", httpMethod = "POST",response = ResultVo.class)
     public ResultVo sendresetpwd(HttpServletRequest request) throws IOException {
         JSONObject json = JsonReader.receivePost(request);
         final String mobilephone = json.getString("mobilephone");
@@ -281,6 +290,7 @@ public class LoginController {
      * */
     @ResponseBody
     @PostMapping("/user/resetpwd")
+    @ApiOperation(value = "重置密码", httpMethod = "POST",response = ResultVo.class)
     public  ResultVo resetpwd(@RequestBody Login login) {
         String mobilephone=login.getMobilephone();
         String password=login.getPassword();
@@ -317,6 +327,7 @@ public class LoginController {
 
     /**退出登陆*/
     @GetMapping("/user/logout")
+    @ApiOperation(value = "退出登录", httpMethod = "GET")
     public String logout(HttpServletRequest request,HttpSession session){
         String userid = (String)session.getAttribute("userid");
         String username = (String)session.getAttribute("username");

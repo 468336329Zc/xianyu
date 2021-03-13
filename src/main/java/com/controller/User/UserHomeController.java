@@ -7,6 +7,8 @@ import com.service.UserInfoService;
 import com.util.StatusCode;
 import com.vo.LayuiPageVo;
 import com.vo.ResultVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -22,6 +24,7 @@ import java.util.List;
  * @Date: 2020/2/23 18:07
  */
 @Controller
+@Api(value = "UserHomeController",tags = "个人简介相关接口")
 public class UserHomeController {
     @Autowired
     private UserInfoService userInfoService;
@@ -34,6 +37,7 @@ public class UserHomeController {
      */
     @ResponseBody
     @GetMapping("/user/userinfo/{userid}")
+    @ApiOperation(value = "个人简介查询状态", httpMethod = "GET",response = ResultVo.class)
     public ResultVo userinfo(@PathVariable("userid") String userid) {
         UserInfo userInfo = userInfoService.LookUserinfo(userid);
         if (!StringUtils.isEmpty(userInfo)){
@@ -48,6 +52,7 @@ public class UserHomeController {
      */
     @ResponseBody
     @GetMapping("/user/usercommodity/{userid}")
+    @ApiOperation(value = "分页展示个人已审核的商品信息", httpMethod = "GET",response = LayuiPageVo.class)
     public LayuiPageVo userHomeCommodity(@PathVariable("userid") String userid,int limit, int page) {
         List<Commodity> commodityList = commodityService.queryAllCommodity((page - 1) * limit, limit, userid,1);
         Integer dataNumber = commodityService.queryCommodityCount(userid,1);

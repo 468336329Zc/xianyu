@@ -3,11 +3,14 @@ package com.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.entity.UserInfo;
 import com.entity.chat.*;
+import com.google.gson.JsonObject;
 import com.service.ChatmsgService;
 import com.service.FriendsService;
 import com.service.UserInfoService;
 import com.util.StatusCode;
 import com.vo.ResultVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 @Controller
+@Api(value = "ChatCtrl",tags = "聊天功能实现")
 public class ChatCtrl {
     @Autowired
     FriendsService friendsService;
@@ -34,6 +38,7 @@ public class ChatCtrl {
      * **/
     @PostMapping(value = "/chat/upimg")
     @ResponseBody
+    @ApiOperation (value = "上传聊天图片",httpMethod = "POST",response = JsonObject.class)
     public JSONObject upimg(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
         JSONObject res = new JSONObject();
         JSONObject resUrl = new JSONObject();
@@ -52,6 +57,7 @@ public class ChatCtrl {
      * **/
     @PostMapping(value = "/chat/upfile")
     @ResponseBody
+    @ApiOperation (value = "上传聊天文件",httpMethod = "POST",response = JsonObject.class)
     public JSONObject upfile(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
         JSONObject res = new JSONObject();
         JSONObject resUrl = new JSONObject();
@@ -72,6 +78,7 @@ public class ChatCtrl {
      * */
     @PutMapping("/addfrend/{fuserid}")
     @ResponseBody
+    @ApiOperation (value = "添加好友跳转个人中心聊天",httpMethod = "PUT",response = ResultVo.class)
     public ResultVo addfrend(@PathVariable("fuserid") String fuserid,HttpSession session){
         String userid = (String)session.getAttribute("userid");
         if(userid.equals(fuserid)){
@@ -92,6 +99,7 @@ public class ChatCtrl {
      * TODO 跳转到聊天记录界面
      * */
     @GetMapping("/tochatlog")
+    @ApiOperation (value = "跳转聊天记录页面",httpMethod = "GET")
     public String tochatlog(){
         return "/user/chat/chatlog";
     }
@@ -100,6 +108,7 @@ public class ChatCtrl {
      * */
     @GetMapping("/chatlog/{uid}")
     @ResponseBody
+    @ApiOperation (value = "查询聊天记录",httpMethod = "GET",response = List.class)
     public List<UserInfo> chatlog(@PathVariable("uid")String uid,HttpSession session){
         String userid=(String) session.getAttribute("userid");
         List<UserInfo> mines = chatmsgService.LookChatMsg(new ChatMsg().setSenduserid(userid).setReciveuserid(uid));
@@ -110,6 +119,7 @@ public class ChatCtrl {
      * */
     @GetMapping("/initim")
     @ResponseBody
+    @ApiOperation (value = "初始化聊天返回状态",httpMethod = "GET",response = InitImVo.class)
     public InitImVo initim(HttpSession session){
         String userid = (String) session.getAttribute("userid");
         InitImVo initImVo=new InitImVo();

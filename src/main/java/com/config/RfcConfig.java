@@ -3,11 +3,7 @@ package com.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * @Author: hlt
- * @Description: 修改RFC 3986规范
- * @Date: 2020/2/16 23:08
- */
+
 @Configuration
 public class RfcConfig {
     @Bean

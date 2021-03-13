@@ -1,5 +1,7 @@
 package com.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,11 +14,13 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Controller
+@Api(value = "IndexController",tags = "首页")
 public class IndexController {
     /**
      * 网站首页
      * */
     @GetMapping("/")
+    @ApiOperation(value = "跳转首页",httpMethod = "GET")
     public String index(){
         return "/index";
     }
@@ -25,6 +29,7 @@ public class IndexController {
      * 联系我们
      * */
     @GetMapping("/contacts")
+    @ApiOperation(value = "跳转联系我们",httpMethod = "GET")
     public String contacts(){
         return "/common/contacts";
     }
@@ -33,6 +38,7 @@ public class IndexController {
      * 关于我们
      * */
     @GetMapping("/about")
+    @ApiOperation(value = "跳转关于我们",httpMethod = "GET")
     public String about(){
         return "/common/about";
     }
@@ -41,6 +47,7 @@ public class IndexController {
      * 后台管理首页
      * */
     @GetMapping("/admin/index")
+    @ApiOperation(value = "跳转管理首页",httpMethod = "GET")
     public String adminindex(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String admin = (String) session.getAttribute("admin");
         /**拦截器：如果不是管理员，则进行重定向*/
@@ -54,6 +61,7 @@ public class IndexController {
      * 用户登录注册
      * */
     @GetMapping("/login")
+    @ApiOperation(value = "跳转登录注册页面",httpMethod = "GET")
     public String login(){
         return "/user/logreg";
     }
@@ -62,6 +70,7 @@ public class IndexController {
      * 用户忘记密码
      * */
     @GetMapping("/forget")
+    @ApiOperation(value = "跳转忘记密码页面",httpMethod = "GET")
     public String forget(){
         return "user/forget";
     }
@@ -70,6 +79,7 @@ public class IndexController {
      * 个人中心
      * */
     @GetMapping("/user/center")
+    @ApiOperation(value = "跳转个人中心",httpMethod = "GET")
     public String usercenter(){
         return "/user/user-center";
     }
@@ -78,6 +88,7 @@ public class IndexController {
      * 个人主页
      * */
     @GetMapping("/user/home")
+    @ApiOperation(value = "跳转个人主页",httpMethod = "GET")
     public String userhome(){
         return "/user/user-home";
     }
@@ -86,6 +97,7 @@ public class IndexController {
      * 用户修改密码
      * */
     @RequiresPermissions("user:userinfo")
+    @ApiOperation(value = "用户修改密码",httpMethod = "GET")
     @GetMapping("/user/pass")
     public String userinfo(){
         return "/user/updatepass";
@@ -96,6 +108,7 @@ public class IndexController {
      * */
     @RequiresPermissions("user:userinfo")
     @GetMapping("/user/phone")
+    @ApiOperation(value = "跳转更换手机号页面",httpMethod = "GET")
     public String userphone(){
         return "/user/updatephone";
     }
@@ -104,6 +117,7 @@ public class IndexController {
      * 用户商品列表
      * */
     @GetMapping("/user/product")
+    @ApiOperation(value = "跳转商品列表页面",httpMethod = "GET")
     public String userproduct(){
         return "/user/product/productlist";
     }
@@ -112,6 +126,7 @@ public class IndexController {
      * 通知消息
      * */
     @GetMapping("/user/message")
+    @ApiOperation(value = "跳转通知信息页面",httpMethod = "GET")
     public String commonmessage(){
         return "/user/message/message";
     }
@@ -119,6 +134,7 @@ public class IndexController {
      * 弹出式通知消息
      * */
     @GetMapping("/user/alertmessage")
+    @ApiOperation(value = "跳转弹出式通知消息页面",httpMethod = "GET")
     public String alertmessage(){
         return "/user/message/alertmessage";
     }
@@ -126,6 +142,7 @@ public class IndexController {
      * 跳转到产品清单界面
      * */
     @GetMapping("/product-listing")
+    @ApiOperation(value = "跳转产品清单页面",httpMethod = "GET")
     public String toproductlisting() {
         return "/common/product-listing";
     }
@@ -134,6 +151,7 @@ public class IndexController {
      * 跳转到产品清单搜索界面
      * */
     @GetMapping("/product-search")
+    @ApiOperation(value = "跳转产品清单搜索页面",httpMethod = "GET")
     public String toProductSearchs(String keys, ModelMap modelMap) {
         if(keys==null){
             return "/error/404";
@@ -144,6 +162,7 @@ public class IndexController {
 
     /**用户个人中心默认展示图*/
     @GetMapping("/home/console")
+    @ApiOperation(value = "跳转个人中心默认展示图页面",httpMethod = "GET")
     public String homeconsole(){
         return "/admin/home/console";
     }
@@ -152,12 +171,14 @@ public class IndexController {
      * 管理员首页默认展示图
      * */
     @GetMapping("/echars/console")
+    @ApiOperation(value = "跳转管理员默认展示图页面",httpMethod = "GET")
     public String echars(){
         return "/admin/echars/console";
     }
 
 
     @GetMapping("/app/message/index")
+    @ApiOperation(value = "跳转message/index页面",httpMethod = "GET")
     public String appmessageindex(){
         return "/admin/app/message/index";
     }
@@ -166,6 +187,7 @@ public class IndexController {
      * 用户收藏列表
      * */
     @GetMapping("/user/collect")
+    @ApiOperation(value = "跳转收藏列表页面",httpMethod = "GET")
     public String usercollect(){
         return "/user/collect/collectlist";
     }
@@ -174,6 +196,7 @@ public class IndexController {
      * 用户售出记录
      * */
     @GetMapping("/user/sold")
+    @ApiOperation(value = "跳转售出记录页面",httpMethod = "GET")
     public String sold(){
         return "/user/sold/soldrecord";
     }
@@ -182,6 +205,7 @@ public class IndexController {
      * 销量列表
      * */
     @GetMapping("/admin/sold")
+    @ApiOperation(value = "跳转销售列表页面",httpMethod = "GET")
     public String adminSold(){
         return "/admin/sold/soldrecord";
     }
@@ -190,6 +214,7 @@ public class IndexController {
      * 首页公告清单
      * */
     @GetMapping("/user/newslist")
+    @ApiOperation(value = "跳转首页公告清单页面",httpMethod = "GET")
     public String userNews(){
         return "/common/listnews";
     }
@@ -198,6 +223,7 @@ public class IndexController {
      * 管理员公告列表
      * */
     @GetMapping("/admin/newslist")
+    @ApiOperation(value = "跳转管理员公告列表页面",httpMethod = "GET")
     public String adminNews(){
         return "/admin/news/newslist";
     }

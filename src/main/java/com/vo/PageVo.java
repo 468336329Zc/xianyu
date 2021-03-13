@@ -1,10 +1,20 @@
 package com.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "PageVo",description = "首页返回的数据统一json格式")
 public class PageVo<T> {
+
+    @ApiModelProperty(value = "",name = "status",notes ="返回状态码" )
     private Integer status; //状态码
+    @ApiModelProperty(value = "",name = "message",notes ="返回信息" )
     private String message; //返回信息
+    @ApiModelProperty(value = "",name = "pages",notes ="描述返回页数" )
     private Integer pages;  //返回页数
+    @ApiModelProperty(value = "",name = "dataNumber",notes ="描述总记录数" )
     private Integer dataNumber;//总记录数
+    @ApiModelProperty(value = "",name = "data",notes ="返回数据" )
     private T data;    //返回数据
 
     public PageVo(){

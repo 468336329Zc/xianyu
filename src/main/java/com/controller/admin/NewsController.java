@@ -1,6 +1,7 @@
 package com.controller.admin;
 
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.entity.News;
 import com.service.NewsService;
 import com.util.KeyUtil;
@@ -8,6 +9,8 @@ import com.util.StatusCode;
 import com.vo.LayuiPageVo;
 import com.vo.PageVo;
 import com.vo.ResultVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -26,6 +29,7 @@ import java.util.List;
  * @since 2019-12-21
  */
 @Controller
+@Api(value = "NewsController",tags = "公告信息相关")
 public class NewsController {
     @Autowired
     private NewsService newsService;
@@ -37,6 +41,7 @@ public class NewsController {
      * */
     @ResponseBody
     @PostMapping("/news/insert")
+    @ApiOperation(value = "发布公告", httpMethod = "POST",response = ResultVo.class)
     public ResultVo insertNews(@RequestBody News news, HttpSession session){
         String username=(String) session.getAttribute("username");
         news.setId(KeyUtil.genUniqueKey()).setUsername(username);
@@ -54,6 +59,7 @@ public class NewsController {
      * */
     @ResponseBody
     @PutMapping("/news/delect/{id}")
+    @ApiOperation(value = "删除公告", httpMethod = "PUT",response = ResultVo.class)
     public ResultVo delectNews (@PathVariable("id") String id, HttpSession session) {
         String username = (String) session.getAttribute("username");
         News news = newsService.queryNewsById(id);
@@ -77,6 +83,7 @@ public class NewsController {
      *查看公告详情
      * **/
     @GetMapping("/news/detail/{id}")
+    @ApiOperation(value = "查看公告详情", httpMethod = "GET",response = String.class)
     public String queryNewsById (@PathVariable("id") String id,ModelMap modelMap){
         //浏览量+1
         newsService.addNewsRednumber(id);
@@ -91,6 +98,7 @@ public class NewsController {
      *跳转到发布公告
      * **/
     @GetMapping("/news/torelnews")
+    @ApiOperation(value = "跳转到发布公告", httpMethod = "GET",response = String.class)
     public String torelnews (){
         return "/admin/news/relnews";
     }
@@ -99,6 +107,7 @@ public class NewsController {
      *跳转到修改公告
      * **/
     @GetMapping("/news/toupdate/{id}")
+    @ApiOperation(value = "跳转到修改公告", httpMethod = "GET",response = String.class)
     public String toupdate (@PathVariable("id") String id, ModelMap modelMap, HttpSession session){
         String username=(String) session.getAttribute("username");
         News news = newsService.queryNewsById(id);
@@ -118,6 +127,7 @@ public class NewsController {
      * **/
     @ResponseBody
     @PutMapping("/news/update")
+    @ApiOperation(value = "修改公告", httpMethod = "PUT",response = ResultVo.class)
     public ResultVo updateNews (@RequestBody News news){
         Integer i = newsService.updateNews(news);
         if (i == 1){
@@ -131,6 +141,7 @@ public class NewsController {
      * **/
     @ResponseBody
     @GetMapping("/news/all")
+    @ApiOperation(value = "查询前三条公告", httpMethod = "GET",response = ResultVo.class)
     public ResultVo queryNews (){
         List<News> newslist = newsService.queryNews();
         return new ResultVo(true,StatusCode.OK,"查询成功",newslist);
@@ -143,6 +154,7 @@ public class NewsController {
      */
     @ResponseBody
     @GetMapping("/news/queryall")
+    @ApiOperation(value = "后台分页查看公告列表", httpMethod = "GET",response = LayuiPageVo.class)
     public LayuiPageVo queryAllNews(int limit, int page) {
         List<News> newsList = newsService.queryAllNews((page - 1) * limit, limit);
         Integer dataNumber = newsService.LookNewsCount();
@@ -154,6 +166,7 @@ public class NewsController {
      * */
     @GetMapping("/news/index/number")
     @ResponseBody
+    @ApiOperation(value = "首页公告分页数据", httpMethod = "GET",response = Page.class)
     public PageVo newsNumber(){
         Integer dataNumber = newsService.LookNewsCount();
         return new PageVo(StatusCode.OK,"查询成功",dataNumber);
@@ -166,6 +179,7 @@ public class NewsController {
      * */
     @GetMapping("/news/index/{page}")
     @ResponseBody
+    @ApiOperation(value = "首页网站公告", httpMethod = "GET",response = ResultVo.class)
     public ResultVo newsIndex(@PathVariable("page") Integer page){
         List<News> newsList = newsService.queryAllNews((page - 1) * 9, 9);
         return new ResultVo(true,StatusCode.OK,"查询成功",newsList);

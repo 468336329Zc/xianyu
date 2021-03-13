@@ -1,9 +1,19 @@
 package com.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "LayuiPageVo",description ="分页数据格式返回类" )
 public class LayuiPageVo<T> {
+
+
+    @ApiModelProperty(value = "",name = "msg",notes ="描述返回状态" )
     private String msg;
+    @ApiModelProperty(value = "",name = "code",notes ="状态码" )
     private Integer code;
+    @ApiModelProperty(value = "",name = "count",notes ="数量" )
     private Integer count;
+    @ApiModelProperty(value = "",name = "data",notes ="返回数据" )
     private T data;
 
     public LayuiPageVo(String msg, Integer code, Integer count, T data) {

@@ -9,6 +9,9 @@ import com.util.StatusCode;
 import com.vo.LayuiPageVo;
 import com.vo.PageVo;
 import com.vo.ResultVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,10 +31,9 @@ import java.util.*;
  *  前端控制器
  * </p>
  *
- * @author hlt
- * @since 2019-12-21
  */
 @Controller
+@Api(value = "CommdityController",tags = "商品相关")
 public class CommodityController {
     @Autowired
     private CommodityService commodityService;
@@ -51,6 +53,7 @@ public class CommodityController {
     /**
      * 跳转到发布商品
      */
+    @ApiOperation(value = "跳转发布商品",httpMethod = "GET")
     @GetMapping("/user/relgoods")
     public String torelgoods(HttpSession session){
         /*String userid = (String)session.getAttribute("userid");
@@ -67,6 +70,7 @@ public class CommodityController {
      *  2、查询商品得其他图
      */
     @GetMapping("/user/editgoods/{commid}")
+    @ApiOperation (value = "跳转至修改商品",httpMethod = "GET")
     public String toeditgoods(@PathVariable("commid")String commid, HttpSession session, ModelMap modelMap){
         /*String userid = (String)session.getAttribute("userid");
         if(userid==null){
@@ -91,6 +95,7 @@ public class CommodityController {
      */
     @PostMapping("/changegoods/rel")
     @ResponseBody
+    @ApiOperation (value = "修改商品",httpMethod = "POST",response = String.class)
     public String changegoods(@RequestBody Commodity commodity, HttpSession session){
         String userid = (String) session.getAttribute("userid");
         commodity.setUpdatetime(new Date()).setCommstatus(3);
@@ -118,6 +123,7 @@ public class CommodityController {
      */
     @PostMapping("/relgoods/rel")
     @ResponseBody
+    @ApiOperation (value = "发布商品",httpMethod = "POST",response = String.class)
     public String relgoods(@RequestBody Commodity commodity, HttpSession session){
         String userid = (String) session.getAttribute("userid");
         UserInfo userInfo = userInfoService.LookUserinfo(userid);
@@ -162,6 +168,7 @@ public class CommodityController {
      */
     @PostMapping(value="/relgoods/images")
     @ResponseBody
+    @ApiOperation (value = "上传其他照片",httpMethod = "POST",response = JSONObject.class)
     public JSONObject relgoodsimages(@RequestParam(value = "file", required = false) MultipartFile[] file) throws IOException {
         JSONObject res = new JSONObject();
         JSONObject resUrl = new JSONObject();
@@ -188,6 +195,7 @@ public class CommodityController {
      * 商品发布者和管理员可以查看
      * */
     @GetMapping("/product-detail/{commid}")
+    @ApiOperation (value = "商品详情",httpMethod = "GET",response = String.class)
     public String product_detail(@PathVariable("commid") String commid, ModelMap modelMap,HttpSession session){
         String couserid = (String) session.getAttribute("userid");
 
@@ -241,6 +249,7 @@ public class CommodityController {
      * */
     @GetMapping("/product/search/number/{commname}")
     @ResponseBody
+    @ApiOperation (value = "搜索商品的分页数据",httpMethod = "GET",response = PageVo.class)
     public PageVo searchCommodityNumber(@PathVariable("commname") String commname){
         Integer dataNumber = commodityService.queryCommodityByNameCount(commname);
         return new PageVo(StatusCode.OK,"查询成功",dataNumber);
@@ -252,6 +261,7 @@ public class CommodityController {
      * */
     @GetMapping("/product/search/{nowPaging}/{commname}")
     @ResponseBody
+    @ApiOperation (value = "搜索商品",httpMethod = "GET",response = ResultVo.class)
     public ResultVo searchCommodity(@PathVariable("nowPaging") Integer page, @PathVariable("commname") String commname){
         List<Commodity> commodityList = commodityService.queryCommodityByName((page - 1) * 20, 20, commname);
 
@@ -273,6 +283,7 @@ public class CommodityController {
      * */
     @ResponseBody
     @GetMapping("/index/product/{category}")
+    @ApiOperation (value = "首页分类查询商品",httpMethod = "POST",response = ResultVo.class)
     public ResultVo indexCommodity(@PathVariable("category") String category) {
         List<Commodity> commodityList = commodityService.queryCommodityByCategory(category);
         for (Commodity commodity : commodityList) {
@@ -288,6 +299,7 @@ public class CommodityController {
      * */
     @ResponseBody
     @GetMapping("/product/latest")
+    @ApiOperation (value = "返回最新8条商品",httpMethod = "GET",response = ResultVo.class)
     public ResultVo latestCommodity() {
         String category = "全部";
         List<Commodity> commodityList = commodityService.queryCommodityByCategory(category);
@@ -307,6 +319,7 @@ public class CommodityController {
      * */
     @GetMapping("/list-number/{category}/{area}/{minmoney}/{maxmoney}")
     @ResponseBody
+    @ApiOperation (value = "产品清单分页数据",httpMethod = "GET",response = PageVo.class)
     public PageVo productListNumber(@PathVariable("category") String category, @PathVariable("area") String area,
                                     @PathVariable("minmoney") BigDecimal minmoney, @PathVariable("maxmoney") BigDecimal maxmoney,
                                     HttpSession session) {
@@ -328,9 +341,10 @@ public class CommodityController {
      * */
     @GetMapping("/product-listing/{category}/{nowPaging}/{area}/{minmoney}/{maxmoney}/{price}")
     @ResponseBody
-    public ResultVo productlisting(@PathVariable("category") String category, @PathVariable("nowPaging") Integer page,
-                                 @PathVariable("area") String area, @PathVariable("minmoney") BigDecimal minmoney, @PathVariable("maxmoney") BigDecimal maxmoney,
-                                 @PathVariable("price") Integer price, HttpSession session) {
+    @ApiOperation (value = "产品清单页面",httpMethod = "GET",response = ResultVo.class)
+    public ResultVo productlisting(@PathVariable("category") @ApiParam(value = "商品分类目录") String category, @PathVariable("nowPaging") Integer page,
+                                   @PathVariable("area") String area, @PathVariable("minmoney") BigDecimal minmoney, @PathVariable("maxmoney") BigDecimal maxmoney,
+                                   @PathVariable("price") Integer price, HttpSession session) {
         String school=null;
         if(!area.equals("全部")) {
             String userid = (String) session.getAttribute("userid");
@@ -390,6 +404,7 @@ public class CommodityController {
      */
     @GetMapping("/user/commodity/{commstatus}")
     @ResponseBody
+    @ApiOperation (value = "分页展示个人各类商品信息",httpMethod = "GET",response = LayuiPageVo.class)
     public LayuiPageVo userCommodity(@PathVariable("commstatus") Integer commstatus, int limit, int page, HttpSession session) {
         String userid = (String) session.getAttribute("userid");
         //如果未登录，给一个假id
@@ -415,6 +430,7 @@ public class CommodityController {
      * */
     @ResponseBody
     @GetMapping("/user/changecommstatus/{commid}/{commstatus}")
+    @ApiOperation (value = "个人岁商品操作返回状态",httpMethod = "GET",response = ResultVo.class)
     public ResultVo ChangeCommstatus(@PathVariable("commid") String commid, @PathVariable("commstatus") Integer commstatus, HttpSession session) {
         Integer i = commodityService.ChangeCommstatus(commid, commstatus);
         if (i == 1){

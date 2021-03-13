@@ -6,6 +6,7 @@ import com.entity.chat.ChatMsg;
 import com.service.ChatmsgService;
 import com.service.NoticesService;
 import com.service.UserInfoService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -22,6 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Controller
 @ServerEndpoint(value = "/websocket/{userno}")
+@Api(value = "ChatWebSocket",tags = "聊天功能类")
 public class ChatWebSocket {
     // 这里使用静态，让 service 属于类
     private static ChatmsgService chatMsgService;
