@@ -7,13 +7,6 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
-/**
- * <p>
- * 
- * </p>
- *
- *
- */
 @AllArgsConstructor//全参构造
 @NoArgsConstructor//无参构造
 @Data

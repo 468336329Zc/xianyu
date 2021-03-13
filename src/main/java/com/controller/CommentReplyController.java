@@ -21,8 +21,6 @@ import java.util.List;
  *  评论和回复控制器
  * </p>
  *
- * @author hlt
- * @since 2019-12-21
  */
 @Controller
 @Api(value = "CommentReplyController",tags = "评论回复相关")

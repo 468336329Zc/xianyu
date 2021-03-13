@@ -2,7 +2,6 @@ package com.service;
 
 import com.entity.Notices;
 import com.mapper.NoticesMapper;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +13,6 @@ import java.util.List;
  *  消息通知服务类
  * </p>
  *
- * @author hlt
- * @since 2019-12-25
  */
 @Service
 @Transactional

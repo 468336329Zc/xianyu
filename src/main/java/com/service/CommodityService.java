@@ -2,7 +2,6 @@ package com.service;
 
 import com.entity.Commodity;
 import com.mapper.CommodityMapper;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -16,8 +15,6 @@ import java.util.List;
  *  服务类
  * </p>
  *
- * @author hlt
- * @since 2019-12-21
  */
 @Service
 @Transactional

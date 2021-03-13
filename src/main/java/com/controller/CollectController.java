@@ -23,8 +23,6 @@ import java.util.List;
  *  收藏控制器
  * </p>
  *
- * @author hlt
- * @since 2019-12-21
  */
 @Controller
 @Api(value = "CollectController",tags = "商品收藏")

@@ -23,8 +23,6 @@ import java.util.List;
  *  消息通知控制器
  * </p>
  *
- * @author hlt
- * @since 2019-12-25
  */
 @Controller
 @Api(value = "NoticesController",tags = "信息通知相关")
