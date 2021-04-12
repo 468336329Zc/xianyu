@@ -3,7 +3,7 @@
 
 
 #### 软件架构
-Springboot+shiro+vue+MySQL
+Springboot+shiro+vue+Mybatis+MySQL
 
 ### 一、功能：
   #### 登陆、注册、重置密码模块
@@ -77,7 +77,7 @@ Springboot+shiro+vue+MySQL
   未实现。
 
   #### 安全
-  1.使用shiro做数据加密验证。
+  1.使用shiro做授权和认证。
 
   #### 日志
   1.使用了阿里巴巴的druid数据库连接池，对sql执行做了日志监控。
@@ -85,8 +85,20 @@ Springboot+shiro+vue+MySQL
   #### 错误页面
   1.自定义页面处理错误。
 
-  ####异常处理
-   1.统一异常处理。
+  #### 异常处理
+   1.统一异常处理
+
+#### 统一vo
+
+统一了返回的json数据对象。
+
+分为三个VO对象，
+
+ResultVo  一般的json返回数据
+
+ PageVo  首页的vo 
+
+LayuiVo   laiui分页数据vo
 
   #### swagger api接口文档
    使用swagger生成api接口文档。
